@@ -18,6 +18,9 @@ export const createPromotion = async (req: Request, res: Response) => {
         });
         res.status(201).json({ ...promotion, eligibleCategories: JSON.parse(promotion.eligibleCategories) });
     } catch (error: any) {
+        if (error.code === 'P2002') {
+            return res.status(400).json({ error: 'Promotion code already exists', details: 'Please use a unique promotion code' });
+        }
         res.status(500).json({ error: 'Failed to create promotion', details: error.message });
     }
 };

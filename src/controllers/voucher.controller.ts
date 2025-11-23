@@ -16,6 +16,9 @@ export const createVoucher = async (req: Request, res: Response) => {
         });
         res.status(201).json(voucher);
     } catch (error: any) {
+        if (error.code === 'P2002') {
+            return res.status(400).json({ error: 'Voucher code already exists', details: 'Please use a unique voucher code' });
+        }
         res.status(500).json({ error: 'Failed to create voucher', details: error.message });
     }
 };
